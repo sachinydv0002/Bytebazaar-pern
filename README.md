@@ -101,6 +101,26 @@ Set a long random `JWT_SECRET`; never expose it to the frontend. Product browsin
 
 For production, run `npm run build` and then `npm start`. Express serves `frontend/dist` without intercepting `/api/*` routes or static JavaScript assets.
 
+### Render production environment
+
+For the current single-service Render deployment (`https://bytebazaar-pern.onrender.com/`),
+the frontend uses same-origin `/api` requests in the production build, so no frontend API
+URL is required. Configure these backend environment variables in the Render service
+dashboard, then redeploy:
+
+* `PGUSER`, `PGPASSWORD`, `PGHOST`, `PGPORT`, `PGDATABASE`
+* `ARCJET_KEY`
+* `NODE_ENV=production`
+* `ADMIN_USERNAME`
+* `ADMIN_PASSWORD_HASH` (a bcrypt hash, never the plaintext password)
+* `JWT_SECRET`
+* `JWT_EXPIRES_IN` (optional; defaults to `1h`)
+
+Do not put any of these backend values in `frontend/.env` or variables prefixed with
+`VITE_`. Vite exposes `VITE_*` values to the browser. Generate the password hash locally
+with the command above, paste only the resulting hash into Render, and redeploy after
+changing environment variables.
+
 ---
 
 ## 🙌 Author

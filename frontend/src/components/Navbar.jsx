@@ -42,7 +42,7 @@ function Navbar() {
     <Link
       key={to}
       to={to}
-      className={linkClasses(to)}
+      className={`${linkClasses(to)} w-full`}
       aria-current={isActive(to) ? "page" : undefined}
       aria-label={label}
     >
@@ -65,7 +65,7 @@ function Navbar() {
         aria-label="Log out Admin"
       >
         <UserRoundIcon className="size-5 shrink-0 md:size-[1.1rem]" />
-        <span className="hidden truncate md:inline">Admin</span>
+        <span className="truncate">Admin</span>
       </button>
     ) : (
       <button
@@ -75,6 +75,7 @@ function Navbar() {
         aria-label="Open Admin login"
       >
         <UserRoundIcon className="size-5 shrink-0 md:size-[1.1rem]" />
+        <span className="truncate md:hidden">Login</span>
         <span className="hidden truncate md:inline">Admin Login</span>
       </button>
     )
@@ -98,16 +99,18 @@ function Navbar() {
           </div>
 
           <div className="flex items-center md:hidden">
-            <ThemeSelector />
+            {adminAction}
           </div>
         </div>
 
         <nav
-          className="grid grid-cols-5 gap-1 border-t border-base-content/10 py-2 md:hidden"
+          className="grid grid-cols-5 justify-items-center gap-1 border-t border-base-content/10 py-2 md:hidden"
           aria-label="Mobile navigation"
         >
           {navItems.map(renderNavLink)}
-          {adminAction}
+          <div className="flex w-full justify-center">
+            <ThemeSelector />
+          </div>
         </nav>
 
         {!isAdmin && <AdminLogin />}
