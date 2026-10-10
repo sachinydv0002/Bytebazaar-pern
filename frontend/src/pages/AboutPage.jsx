@@ -14,6 +14,7 @@ import {
   SparklesIcon,
 } from "lucide-react";
 import { createElement } from "react";
+import { DEVELOPER_NAME, PORTFOLIO_URL } from "../config/site";
 
 const technologies = [
   { name: "React", description: "Component-based user interface", icon: Code2Icon },
@@ -71,9 +72,56 @@ function AboutPage() {
         </div>
         <div className="rounded-2xl border border-base-content/10 bg-base-100 p-6 shadow-sm sm:p-8">
           <p className="text-lg leading-relaxed text-base-content/80">
-            I'm Sachin, a Computer Science and Engineering student passionate about building modern, user-friendly web applications. I enjoy turning ideas into practical solutions using React, JavaScript, Node.js, and PostgreSQL, with a focus on clean interfaces, reliable backend systems, and meaningful user experiences. I'm continuously exploring new technologies and improving my skills by building real-world projects like ByteBazaar.
-          </p>
+            I'm Sachin, a Computer Science and Engineering student passionate about building modern, responsive, and user-friendly web applications. I enjoy working across the full stack, from crafting intuitive interfaces with React and JavaScript to developing robust backend systems with Node.js and Express.js and managing databases like PostgreSQL. I focus on writing clean, maintainable code and creating reliable, scalable digital experiences. I'm continuously exploring new technologies, strengthening my problem-solving skills, and turning ideas into practical applications through real-world projects like ByteBazaar.          </p>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16 md:pb-24">
+        <div className="flex flex-col gap-8 rounded-2xl border border-base-content/10 bg-base-100 p-6 shadow-sm sm:p-8 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="mb-3 font-mono text-sm uppercase tracking-[0.2em] text-primary">Meet the developer</p>
+            <h2 className="text-3xl font-bold sm:text-4xl">{DEVELOPER_NAME}, Full-Stack Developer</h2>
+            <p className="mt-4 leading-relaxed text-base-content/70">
+              I&apos;m a Computer Science and Engineering student passionate about building modern,
+              scalable, and responsive web applications. I enjoy working across the entire
+              development lifecycle, from crafting intuitive user interfaces to building robust
+              backend systems, designing databases, and integrating APIs. I focus on writing clean,
+              maintainable code and creating reliable digital experiences.
+            </p>
+            <div className="mt-6 grid gap-4 text-sm text-base-content/70 sm:grid-cols-2">
+              {[
+                ["Frontend", "HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, Tailwind CSS, Bootstrap"],
+                ["Backend", "Node.js, Express.js, REST APIs, JWT Authentication"],
+                ["Databases", "PostgreSQL, MySQL, MongoDB, Redis"],
+                ["Programming Languages", "Java, JavaScript, TypeScript, Python, C"],
+                ["Tools & Platforms", "Git, GitHub, VS Code, Postman, npm, Vite"],
+                ["Deployment & DevOps", "Vercel, Netlify, Docker, GitHub Actions, CI/CD, Linux"],
+                ["Core Concepts", "Data Structures & Algorithms, Object-Oriented Programming, Database Design, Authentication & Authorization, Responsive Web Design"],
+              ].map(([category, skills]) => (
+                <div key={category} className="rounded-xl bg-base-200/70 p-4">
+                  <h3 className="font-semibold text-base-content">{category}</h3>
+                  <p className="mt-1 leading-relaxed">{skills}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 leading-relaxed text-base-content/70">
+              I enjoy learning new technologies, solving real-world problems, and turning ideas
+              into practical software solutions.
+            </p>
+          </div>
+          <a
+            href={PORTFOLIO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary min-h-12 shrink-0 gap-2"
+          >
+            View My Portfolio
+            <ExternalLinkIcon className="size-4" aria-hidden="true" />
+          </a>
+        </div>
+        <p className="mt-6 text-center text-base-content/65">
+          Explore my portfolio to discover my projects, technical skills, and development journey.
+        </p>
       </section>
 
       <section className="bg-base-100">

@@ -5,6 +5,7 @@ import ProductPage from "./pages/ProductPage";
 import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/CartPage";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 import { Routes, Route } from "react-router-dom";
 import { useThemeStore } from "@/store/useThemeStore";
@@ -17,6 +18,7 @@ function App() {
   return (
     <div className="flex min-h-screen min-w-0 flex-col overflow-x-hidden bg-base-200 transition-colors duration-300" data-theme={theme}>
       <Navbar />
+      <ScrollToTop />
 
       <div className="flex-1">
         <Routes>

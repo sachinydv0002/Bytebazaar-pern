@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createElement } from "react";
+import { DEVELOPER_NAME, PORTFOLIO_URL } from "../config/site";
 
 const externalLinkProps = { target: "_blank", rel: "noopener noreferrer" };
 const socials = [
@@ -83,7 +84,18 @@ function Footer() {
       <div className="border-t border-neutral-content/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-neutral-content/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-sm lg:px-8">
           <p>© {new Date().getFullYear()} ByteBazaar. All rights reserved.</p>
-          <p>Built with 💕</p>
+          <p className="flex flex-wrap items-center gap-1">
+            <span>Built with 💕 by {DEVELOPER_NAME}</span>
+            <span aria-hidden="true">·</span>
+            <a
+              href={PORTFOLIO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-neutral-content/75 underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
+              View Portfolio
+            </a>
+          </p>
         </div>
       </div>
     </footer>

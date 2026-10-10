@@ -3,11 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import {
   HomeIcon,
   InfoIcon,
-  LogInIcon,
-  LogOutIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
   StoreIcon,
+  UserRoundIcon,
 } from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
 import AdminLogin from "./AdminLogin";
@@ -32,7 +31,7 @@ function Navbar() {
   };
 
   const linkClasses = (to) => (
-    `group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold transition-all sm:px-3 ${
+    `group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-1.5 py-2 text-sm font-semibold transition-all md:px-2.5 ${
       isActive(to)
         ? "bg-primary text-primary-content shadow-sm"
         : "text-base-content/75 hover:bg-primary/10 hover:text-primary"
@@ -47,8 +46,8 @@ function Navbar() {
       aria-current={isActive(to) ? "page" : undefined}
       aria-label={label}
     >
-      {createElement(Icon, { className: "size-4 shrink-0 sm:size-[1.1rem]" })}
-      <span className="truncate">{shortLabel}</span>
+      {createElement(Icon, { className: "size-5 shrink-0 md:size-[1.1rem]" })}
+      <span className="hidden truncate md:inline">{shortLabel}</span>
       {label === "Cart" && (
         <span className={`badge badge-xs sm:badge-sm ${isActive(to) ? "badge-secondary" : "badge-primary"}`}>
           {cartCount}
@@ -61,23 +60,22 @@ function Navbar() {
     isAdmin ? (
       <button
         type="button"
-        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold text-success transition-all hover:bg-success/10 sm:px-3"
+        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-1.5 py-2 text-sm font-semibold text-success transition-all hover:bg-success/10 md:px-2.5"
         onClick={logout}
         aria-label="Log out Admin"
       >
-        <LogOutIcon className="size-4 shrink-0 sm:size-[1.1rem]" />
-        <span className="truncate">Admin</span>
+        <UserRoundIcon className="size-5 shrink-0 md:size-[1.1rem]" />
+        <span className="hidden truncate md:inline">Admin</span>
       </button>
     ) : (
       <button
         type="button"
-        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold text-base-content/75 transition-all hover:bg-primary/10 hover:text-primary sm:px-3"
+        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-1.5 py-2 text-sm font-semibold text-base-content/75 transition-all hover:bg-primary/10 hover:text-primary md:px-2.5"
         onClick={() => document.getElementById("admin_login_modal")?.showModal()}
         aria-label="Open Admin login"
       >
-        <LogInIcon className="size-4 shrink-0 sm:size-[1.1rem]" />
-        <span className="truncate sm:hidden">Admin</span>
-        <span className="hidden truncate sm:inline">Admin Login</span>
+        <UserRoundIcon className="size-5 shrink-0 md:size-[1.1rem]" />
+        <span className="hidden truncate md:inline">Admin Login</span>
       </button>
     )
   );
