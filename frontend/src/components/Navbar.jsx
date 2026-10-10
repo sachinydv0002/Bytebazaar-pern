@@ -1,51 +1,121 @@
-import { Link, useResolvedPath } from "react-router-dom";
-import { ShoppingBagIcon, ShoppingCartIcon } from "lucide-react";
+import { createElement } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  HomeIcon,
+  InfoIcon,
+  LogInIcon,
+  LogOutIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  StoreIcon,
+} from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
-import { useProductStore } from "../store/useProductStore";
+import AdminLogin from "./AdminLogin";
+import { useAuthStore } from "../store/useAuthStore";
+import { useCartStore } from "../store/useCartStore";
+
+const navItems = [
+  { label: "Home", shortLabel: "Home", to: "/", icon: HomeIcon },
+  { label: "About", shortLabel: "About", to: "/about", icon: InfoIcon },
+  { label: "Shop", shortLabel: "Shop", to: "/#product-listing", icon: StoreIcon },
+  { label: "Cart", shortLabel: "Cart", to: "/cart", icon: ShoppingBagIcon },
+];
 
 function Navbar() {
-  const { pathname } = useResolvedPath();
-  const isHomePage = pathname === "/";
+  const { pathname } = useLocation();
+  const { isAdmin, logout } = useAuthStore();
+  const cartCount = useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
 
-  const { products } = useProductStore();
+  const isActive = (to) => {
+    if (to === "/#product-listing") return pathname === "/";
+    return pathname === to;
+  };
+
+  const linkClasses = (to) => (
+    `group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold transition-all sm:px-3 ${
+      isActive(to)
+        ? "bg-primary text-primary-content shadow-sm"
+        : "text-base-content/75 hover:bg-primary/10 hover:text-primary"
+    }`
+  );
+
+  const renderNavLink = ({ label, shortLabel, to, icon: Icon }) => (
+    <Link
+      key={to}
+      to={to}
+      className={linkClasses(to)}
+      aria-current={isActive(to) ? "page" : undefined}
+      aria-label={label}
+    >
+      {createElement(Icon, { className: "size-4 shrink-0 sm:size-[1.1rem]" })}
+      <span className="truncate">{shortLabel}</span>
+      {label === "Cart" && (
+        <span className={`badge badge-xs sm:badge-sm ${isActive(to) ? "badge-secondary" : "badge-primary"}`}>
+          {cartCount}
+        </span>
+      )}
+    </Link>
+  );
+
+  const adminAction = (
+    isAdmin ? (
+      <button
+        type="button"
+        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold text-success transition-all hover:bg-success/10 sm:px-3"
+        onClick={logout}
+        aria-label="Log out Admin"
+      >
+        <LogOutIcon className="size-4 shrink-0 sm:size-[1.1rem]" />
+        <span className="truncate">Admin</span>
+      </button>
+    ) : (
+      <button
+        type="button"
+        className="group flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-semibold text-base-content/75 transition-all hover:bg-primary/10 hover:text-primary sm:px-3"
+        onClick={() => document.getElementById("admin_login_modal")?.showModal()}
+        aria-label="Open Admin login"
+      >
+        <LogInIcon className="size-4 shrink-0 sm:size-[1.1rem]" />
+        <span className="truncate sm:hidden">Admin</span>
+        <span className="hidden truncate sm:inline">Admin Login</span>
+      </button>
+    )
+  );
 
   return (
-    <div className="bg-base-100/80 backdrop-blur-lg border-b border-base-content/10 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="navbar px-4 min-h-[4rem] justify-between">
-          {/* LOGO */}
-          <div className="flex-1 lg:flex-none">
-            <Link to="/" className="hover:opacity-80 transition-opacity">
-              <div className="flex items-center gap-2">
-                <ShoppingCartIcon className="size-9 text-primary" />
-                <span
-                  className="font-semibold font-mono tracking-widest text-2xl 
-                    bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
-                >
-                  ByteBazaar
-                </span>
-              </div>
-            </Link>
+    <header className="sticky top-0 z-50 border-b border-base-content/10 bg-base-100/95 shadow-sm backdrop-blur-lg">
+      <div className="mx-auto w-full max-w-7xl px-3 sm:px-4">
+        <div className="flex min-h-[4.25rem] items-center justify-between gap-2">
+          <Link to="/" className="flex min-w-0 shrink items-center gap-2 transition-opacity hover:opacity-80" aria-label="ByteBazaar home">
+            <ShoppingCartIcon className="size-8 shrink-0 text-primary sm:size-9" />
+            <span className="truncate bg-gradient-to-r from-primary to-secondary bg-clip-text font-mono text-lg font-semibold tracking-widest text-transparent sm:text-2xl">
+              ByteBazaar
+            </span>
+          </Link>
+
+          <div className="hidden items-center gap-1 md:flex">
+            {navItems.map(renderNavLink)}
+            {adminAction}
+            <ThemeSelector />
           </div>
 
-          {/* RIGHT SECTION */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center md:hidden">
             <ThemeSelector />
-
-            {isHomePage && (
-              <div className="indicator">
-                <div className="p-2 rounded-full hover:bg-base-200 transition-colors">
-                  <ShoppingBagIcon className="size-5" />
-                  <span className="badge badge-sm badge-primary indicator-item">
-                    {products.length}
-                  </span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
+
+        <nav
+          className="grid grid-cols-5 gap-1 border-t border-base-content/10 py-2 md:hidden"
+          aria-label="Mobile navigation"
+        >
+          {navItems.map(renderNavLink)}
+          {adminAction}
+        </nav>
+
+        {!isAdmin && <AdminLogin />}
       </div>
-    </div>
+    </header>
   );
 }
+
 export default Navbar;

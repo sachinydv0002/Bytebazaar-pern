@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import path from "path";
 
 import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { sql } from "./config/db.js";
 import { aj } from "./lib/arcjet.js";
 
@@ -14,6 +15,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
+app.set("trust proxy", true);
 
 app.use(express.json());
 app.use(cors());
@@ -56,12 +58,18 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api", (req, res) => {
+  res.status(404).json({ success: false, message: "API route not found" });
+});
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  const frontendDist = path.join(__dirname, "frontend", "dist");
+  app.use(express.static(frontendDist));
 
-  app.use((req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api/") || path.extname(req.path)) return next();
+    res.sendFile(path.join(frontendDist, "index.html"));
   });
 }
 

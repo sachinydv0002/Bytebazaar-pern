@@ -9,18 +9,18 @@ function ThemeSelector() {
     <div className="dropdown dropdown-end">
 
       {/* BUTTON */}
-      <button className="btn btn-ghost btn-circle">
+      <button className="btn btn-ghost btn-square" aria-label="Choose theme" aria-haspopup="true">
         <PaletteIcon className="size-5" />
       </button>
 
       {/* DROPDOWN */}
-      <div className="dropdown-content mt-2 p-2 shadow-2xl bg-base-200 rounded-2xl w-56 border border-base-content/10">
+      <div className="dropdown-content z-50 mt-2 w-56 max-w-[calc(100vw-1rem)] rounded-2xl border border-base-content/10 bg-base-200 p-2 shadow-2xl">
 
         {THEMES.map((themeOption) => (
           <button
             key={themeOption.name}
             onClick={() => setTheme(themeOption.name)}
-            className={`w-full px-4 py-2 rounded-lg flex items-center gap-3 ${
+            className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-4 py-2 ${
               theme === themeOption.name
                 ? "bg-primary/10 text-primary"
                 : "hover:bg-base-content/10"

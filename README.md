@@ -91,6 +91,16 @@ npm install --prefix frontend
 npm run dev
 ```
 
+For local setup, copy `.env.example` to `.env` and configure the PostgreSQL/Neon, Arcjet, and admin variables. Keep `ARCJET_ENV=development` locally so Arcjet uses its documented local request handling; use `ARCJET_ENV=production` in production. Generate `ADMIN_PASSWORD_HASH` with:
+
+```
+node -e "console.log(require('bcryptjs').hashSync('replace-me', 12))"
+```
+
+Set a long random `JWT_SECRET`; never expose it to the frontend. Product browsing and the About page are public, while product creation, editing, and deletion require an admin JWT obtained through `POST /api/auth/login`. Optional footer contact links can be configured with `VITE_LINKEDIN_URL` and `VITE_CONTACT_EMAIL` in `frontend/.env`. The API runs on port 3000 and Vite runs on port 5173.
+
+For production, run `npm run build` and then `npm start`. Express serves `frontend/dist` without intercepting `/api/*` routes or static JavaScript assets.
+
 ---
 
 ## 🙌 Author

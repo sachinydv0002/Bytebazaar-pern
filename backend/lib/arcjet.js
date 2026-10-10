@@ -3,19 +3,20 @@ import "dotenv/config";
 
 export const aj = arcjet({
   key: process.env.ARCJET_KEY,
+  characteristics: ["ip.src"],
   rules: [
     // Shield protects your app
-    shield({ mode: "LIVE" }),
+    shield({ mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN" }),
 
     // Bot detection
     detectBot({
-      mode: "LIVE",
+      mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       allow: ["CATEGORY:SEARCH_ENGINE"],
     }),
 
     // Rate limiting
     tokenBucket({
-      mode: "LIVE",
+      mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       refillRate: 30,
       interval: 5,
       capacity: 20,
